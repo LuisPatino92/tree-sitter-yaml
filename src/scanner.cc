@@ -567,6 +567,7 @@ struct Scanner {
       for (;;) {
         if (is_lka_saf && LKA != '#' && LKA != ':') {ADV();MRK_END();UPD_SCH_STT();}
         else if (is_cur_saf && LKA == '#') {ADV();MRK_END();UPD_SCH_STT();}
+        else if (is_lka_wsp) {ADV();}
         else if (LKA == ':') ADV(); // check later
         else break;
 
