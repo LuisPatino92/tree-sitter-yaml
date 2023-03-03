@@ -267,11 +267,11 @@ struct Scanner {
   }
 
   bool is_nb_double_char(int32_t c) {
-    return is_nb_json(c) && c != '\\' && c != '"';
+    return is_nb_json(c);
   }
 
   bool is_nb_single_char(int32_t c) {
-    return is_nb_json(c) && c != '\'';
+    return is_nb_json(c);
   }
 
   bool is_ns_char(int32_t c) {
@@ -285,7 +285,7 @@ struct Scanner {
 
   bool is_c_indicator(int32_t c) {
     return c == '-' || c == '?' || c == ':' || c == ',' || c == '[' || c == ']' || c == '{'  || c == '}'
-        || c == '#' || c == '&' || c == '*' || c == '!' || c == '|' || c == '>' || c == '\'' || c == '"'
+        || c == '#' || c == '&' || c == '*' || c == '!' || c == '|' || c == '>'
         || c == '%' || c == '@' || c == '`';
   }
 
@@ -305,14 +305,14 @@ struct Scanner {
     return is_ns_word_char(c)
         || c == '#' || c == ';' || c == '/'  || c == '?' || c == ':' || c == '@' || c == '&'
         || c == '=' || c == '+' || c == '$'  || c == ',' || c == '_' || c == '.' || c == '!'
-        || c == '~' || c == '*' || c == '\'' || c == '(' || c == ')' || c == '[' || c == ']';
+        || c == '~' || c == '*' || c == '(' || c == ')' || c == '[' || c == ']';
   }
 
   bool is_ns_tag_char(int32_t c) {
     return is_ns_word_char(c)
         || c == '#' || c == ';' || c == '/'  || c == '?' || c == ':' || c == '@' || c == '&'
         || c == '=' || c == '+' || c == '$'  || c == '_' || c == '.'
-        || c == '~' || c == '*' || c == '\'' || c == '(' || c == ')';
+        || c == '~' || c == '*' || c == '(' || c == ')';
   }
 
   bool is_ns_anchor_char(int32_t c) {
