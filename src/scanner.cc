@@ -565,7 +565,7 @@ struct Scanner {
     bool is_lka_saf = (this->*is_plain_safe)(LKA);
     if (is_lka_saf || is_lka_wsp) {
       for (;;) {
-        if (is_lka_saf && LKA != '#') {ADV();MRK_END();UPD_SCH_STT();}
+        if (is_lka_saf && LKA != '#' && LKA != ':') {ADV();MRK_END();UPD_SCH_STT();}
         else if (is_cur_saf && LKA == '#') {ADV();MRK_END();UPD_SCH_STT();}
         else if (is_lka_wsp) {ADV();UPD_SCH_STT();}
         else if (LKA == ':') ADV(); // check later
