@@ -96,8 +96,6 @@ module.exports = grammar({
     $._r_flw_jsl_val,
     $._br_flw_jsl_val,
     $._r_sgl_flw_jsl_val,
-    $._br_sgl_flw_jsl_val,
-    $._b_sgl_flw_jsl_val,
     $._r_flw_njl_val_blk,
     $._br_flw_njl_val_blk,
     $._r_sgl_flw_njl_val_blk,
@@ -236,8 +234,8 @@ module.exports = grammar({
     _br_flw_val_blk: $ => choice($._br_flw_jsl_val, $._br_flw_njl_val_blk),
 
     _r_sgl_flw_val_blk: $ => choice($._r_sgl_flw_jsl_val, $._r_sgl_flw_njl_val_blk),
-    _br_sgl_flw_val_blk: $ => choice($._br_sgl_flw_jsl_val, $._br_sgl_flw_njl_val_blk),
-    _b_sgl_flw_val_blk: $ => choice($._b_sgl_flw_jsl_val, $._b_sgl_flw_njl_val_blk),
+    _br_sgl_flw_val_blk: $ => $._br_sgl_flw_njl_val_blk,
+    _b_sgl_flw_val_blk: $ => $._b_sgl_flw_njl_val_blk,
 
     // flow value in flow
 
@@ -252,8 +250,6 @@ module.exports = grammar({
     _br_flw_jsl_val: $ => choice($._br_flw_seq_val, $._br_flw_map_val, $._br_pln_flw_val),
 
     _r_sgl_flw_jsl_val: $ => choice($._r_sgl_flw_seq_val, $._r_sgl_flw_map_val, $._r_sgl_pln_flw_val),
-    _br_sgl_flw_jsl_val: $ => choice($._br_sgl_flw_seq_val, $._br_sgl_flw_map_val),
-    _b_sgl_flw_jsl_val: $ => choice($._b_sgl_flw_seq_val, $._b_sgl_flw_map_val),
 
     // non-json-like flow value in block
 

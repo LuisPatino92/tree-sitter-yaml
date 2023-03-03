@@ -2386,30 +2386,12 @@
       ]
     },
     "_br_sgl_flw_val_blk": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_br_sgl_flw_jsl_val"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_br_sgl_flw_njl_val_blk"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "_br_sgl_flw_njl_val_blk"
     },
     "_b_sgl_flw_val_blk": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_b_sgl_flw_jsl_val"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_b_sgl_flw_njl_val_blk"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "_b_sgl_flw_njl_val_blk"
     },
     "_r_flw_val_flw": {
       "type": "CHOICE",
@@ -2540,52 +2522,6 @@
           "content": {
             "type": "SYMBOL",
             "name": "_r_sgl_pln_flw_val"
-          },
-          "named": true,
-          "value": "flow_node"
-        }
-      ]
-    },
-    "_br_sgl_flw_jsl_val": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_br_sgl_flw_seq_val"
-          },
-          "named": true,
-          "value": "flow_node"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_br_sgl_flw_map_val"
-          },
-          "named": true,
-          "value": "flow_node"
-        }
-      ]
-    },
-    "_b_sgl_flw_jsl_val": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_b_sgl_flw_seq_val"
-          },
-          "named": true,
-          "value": "flow_node"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_b_sgl_flw_map_val"
           },
           "named": true,
           "value": "flow_node"
@@ -5788,8 +5724,6 @@
     "_r_flw_jsl_val",
     "_br_flw_jsl_val",
     "_r_sgl_flw_jsl_val",
-    "_br_sgl_flw_jsl_val",
-    "_b_sgl_flw_jsl_val",
     "_r_flw_njl_val_blk",
     "_br_flw_njl_val_blk",
     "_r_sgl_flw_njl_val_blk",
