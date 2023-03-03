@@ -576,10 +576,7 @@ struct Scanner {
         is_lka_wsp = is_wsp(LKA);
         is_lka_saf = (this->*is_plain_safe)(LKA);
 
-        if (cur_chr == ':') {
-          if (is_lka_saf) {MRK_END();UPD_SCH_STT();}
-          else return SCN_FAIL;
-        }
+
       }
     } else return SCN_STOP;
     return SCN_SUCC;
