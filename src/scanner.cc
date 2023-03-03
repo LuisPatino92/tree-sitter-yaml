@@ -530,13 +530,14 @@ struct Scanner {
   }
 
   bool scn_dqt_str_cnt(TSLexer *lexer, TSSymbol result_symbol) {
+    if (!is_nb_json(LKA)) return false;
     if (cur_col == 0 && scn_drs_doc_end(lexer)) {POP_IND();RET_SYM(BL);}
     else ADV();
     MRK_END();
     for (;;) {
-      if (is_ns_char(LKA)) {
+      if (is_nb_json(LKA)) {
         ADV();
-        while (is_ns_char(LKA)) ADV();
+        while (is_nb_json(LKA)) ADV();
         MRK_END();
       }
       if (is_wsp(LKA)) {
@@ -548,13 +549,14 @@ struct Scanner {
   }
 
   bool scn_sqt_str_cnt(TSLexer *lexer, TSSymbol result_symbol) {
+    if (!is_nb_json(LKA)) return false;
     if (cur_col == 0 && scn_drs_doc_end(lexer)) {POP_IND();RET_SYM(BL);}
     else ADV();
     MRK_END();
     for (;;) {
-      if (is_ns_char(LKA)) {
+      if (is_nb_json(LKA)) {
         ADV();
-        while (is_ns_char(LKA)) ADV();
+        while (is_nb_json(LKA)) ADV();
         MRK_END();
       }
       if (is_wsp(LKA)) {
