@@ -2566,15 +2566,6 @@
           },
           "named": true,
           "value": "flow_node"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_br_sgl_pln_blk_val"
-          },
-          "named": true,
-          "value": "flow_node"
         }
       ]
     },
@@ -2595,15 +2586,6 @@
           "content": {
             "type": "SYMBOL",
             "name": "_b_sgl_flw_map_val"
-          },
-          "named": true,
-          "value": "flow_node"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_b_sgl_pln_blk_val"
           },
           "named": true,
           "value": "flow_node"
