@@ -530,31 +530,41 @@ struct Scanner {
   }
 
   bool scn_dqt_str_cnt(TSLexer *lexer, TSSymbol result_symbol) {
-    if (!is_nb_double_char(LKA)) return false;
-    if (cur_col == 0 && scn_drs_doc_end(lexer)) {
-      MRK_END();
-      RET_SYM(cur_chr == '-' ? S_DRS_END : S_DOC_END);
-    } else ADV();
-    while (is_nb_double_char(LKA)) ADV();
+    if (!is_ns_char(LKA)) return false;
+    if (cur_col == 0 && scn_drs_doc_end(lexer)) {POP_IND();RET_SYM(BL);}
+    else ADV();
     MRK_END();
+    for (;;) {
+      if (is_ns_char(LKA)) {
+        ADV();
+        while (is_ns_char(LKA)) ADV();
+        MRK_END();
+      }
+      if (is_wsp(LKA)) {
+        ADV();
+        while (is_wsp(LKA)) ADV();
+      } else break;
+    }
     RET_SYM(result_symbol);
   }
 
-  bool scn_sqt_str_cnt(TSLexer *lexer) {
-    bool is_cur_wsp = is_wsp(cur_chr);
-    bool is_lka_wsp = is_wsp(LKA);
-    if (is_lka_wsp) {
-      for (;;) {
-        if (LKA != '#' && LKA != ':') {ADV();MRK_END();UPD_SCH_STT();}
-        else if (is_lka_wsp) {ADV();UPD_SCH_STT();}
-        else if (LKA == ':') ADV(); // check later
-        else break;
-
-        is_cur_wsp = is_lka_wsp;
-        is_lka_wsp = is_wsp(LKA);
+  bool scn_sqt_str_cnt(TSLexer *lexer, TSSymbol result_symbol) {
+    if (!is_ns_char(LKA)) return false;
+    if (cur_col == 0 && scn_drs_doc_end(lexer)) {POP_IND();RET_SYM(BL);}
+    else ADV();
+    MRK_END();
+    for (;;) {
+      if (is_ns_char(LKA)) {
+        ADV();
+        while (is_ns_char(LKA)) ADV();
+        MRK_END();
       }
-    } else return SCN_STOP;
-    return SCN_SUCC;
+      if (is_wsp(LKA)) {
+        ADV();
+        while (is_wsp(LKA)) ADV();
+      } else break;
+    }
+    RET_SYM(result_symbol);
   }
 
   bool scn_blk_str_bgn(TSLexer *lexer, TSSymbol result_symbol) {
@@ -740,8 +750,8 @@ struct Scanner {
     ) return true;
 
     if (
-      (VLD[R_SQT_STR_CTN] && is_r && scn_sqt_str_cnt(lexer))
-      || (VLD[BR_SQT_STR_CTN] && is_br && scn_sqt_str_cnt(lexer))
+      (VLD[R_SQT_STR_CTN] && is_r && scn_sqt_str_cnt(lexer, R_SQT_STR_CTN))
+      || (VLD[BR_SQT_STR_CTN] && is_br && scn_sqt_str_cnt(lexer, BR_SQT_STR_CTN))
     ) return true;
 
     if (VLD[R_ACR_CTN] && is_r) return scn_acr_ctn(lexer, R_ACR_CTN);
