@@ -215,6 +215,14 @@
           "named": true
         },
         {
+          "type": "flow_mapping",
+          "named": true
+        },
+        {
+          "type": "flow_sequence",
+          "named": true
+        },
+        {
           "type": "plain_scalar",
           "named": true
         },

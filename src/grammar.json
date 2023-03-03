@@ -2347,36 +2347,268 @@
       ]
     },
     "_r_flw_val_blk": {
-      "type": "SYMBOL",
-      "name": "_r_flw_njl_val_blk"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_r_flw_jsl_val"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_r_flw_njl_val_blk"
+        }
+      ]
     },
     "_br_flw_val_blk": {
-      "type": "SYMBOL",
-      "name": "_br_flw_njl_val_blk"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_br_flw_jsl_val"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_br_flw_njl_val_blk"
+        }
+      ]
     },
     "_r_sgl_flw_val_blk": {
-      "type": "SYMBOL",
-      "name": "_r_sgl_flw_njl_val_blk"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_r_sgl_flw_jsl_val"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_r_sgl_flw_njl_val_blk"
+        }
+      ]
     },
     "_br_sgl_flw_val_blk": {
-      "type": "SYMBOL",
-      "name": "_br_sgl_flw_njl_val_blk"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_br_sgl_flw_jsl_val"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_br_sgl_flw_njl_val_blk"
+        }
+      ]
     },
     "_b_sgl_flw_val_blk": {
-      "type": "SYMBOL",
-      "name": "_b_sgl_flw_njl_val_blk"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_b_sgl_flw_jsl_val"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_b_sgl_flw_njl_val_blk"
+        }
+      ]
     },
     "_r_flw_val_flw": {
-      "type": "SYMBOL",
-      "name": "_r_flw_njl_val_flw"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_r_flw_jsl_val"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_r_flw_njl_val_flw"
+        }
+      ]
     },
     "_br_flw_val_flw": {
-      "type": "SYMBOL",
-      "name": "_br_flw_njl_val_flw"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_br_flw_jsl_val"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_br_flw_njl_val_flw"
+        }
+      ]
     },
     "_r_sgl_flw_val_flw": {
-      "type": "SYMBOL",
-      "name": "_r_sgl_flw_njl_val_flw"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_r_sgl_flw_jsl_val"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_r_sgl_flw_njl_val_flw"
+        }
+      ]
+    },
+    "_r_flw_jsl_val": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_r_flw_seq_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_r_flw_map_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_r_pln_flw_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        }
+      ]
+    },
+    "_br_flw_jsl_val": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_br_flw_seq_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_br_flw_map_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_br_pln_flw_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        }
+      ]
+    },
+    "_r_sgl_flw_jsl_val": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_r_sgl_flw_seq_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_r_sgl_flw_map_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_r_sgl_pln_blk_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        }
+      ]
+    },
+    "_br_sgl_flw_jsl_val": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_br_sgl_flw_seq_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_br_sgl_flw_map_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_br_sgl_pln_blk_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        }
+      ]
+    },
+    "_b_sgl_flw_jsl_val": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_b_sgl_flw_seq_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_b_sgl_flw_map_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_b_sgl_pln_blk_val"
+          },
+          "named": true,
+          "value": "flow_node"
+        }
+      ]
     },
     "_r_flw_njl_val_blk": {
       "type": "CHOICE",
@@ -3972,87 +4204,197 @@
       ]
     },
     "_r_flw_imp_r_par": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "FIELD",
-          "name": "key",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_r_flw_njl_val_flw"
-          }
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_r_flw_jsl_val"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_r_flw_jsl_ann_par"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_r_flw_njl_ann_par"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_r_flw_njl_val_flw"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_r_flw_njl_ann_par"
+            }
+          ]
         }
       ]
     },
     "_r_flw_imp_br_par": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "FIELD",
-          "name": "key",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_r_flw_njl_val_flw"
-          }
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_r_flw_jsl_val"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_br_flw_jsl_ann_par"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_br_flw_njl_ann_par"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_r_flw_njl_val_flw"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_br_flw_njl_ann_par"
+            }
+          ]
         }
       ]
     },
     "_br_flw_imp_r_par": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "FIELD",
-          "name": "key",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_br_flw_njl_val_flw"
-          }
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_br_flw_jsl_val"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_r_flw_jsl_ann_par"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_r_flw_njl_ann_par"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_br_flw_njl_val_flw"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_r_flw_njl_ann_par"
+            }
+          ]
         }
       ]
     },
     "_br_flw_imp_br_par": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "FIELD",
-          "name": "key",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_br_flw_njl_val_flw"
-          }
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_br_flw_jsl_val"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_br_flw_jsl_ann_par"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_br_flw_njl_ann_par"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_br_flw_njl_val_flw"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_br_flw_njl_ann_par"
+            }
+          ]
         }
       ]
     },
     "_r_sgl_flw_imp_par": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "FIELD",
-          "name": "key",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_r_sgl_flw_njl_val_flw"
-          }
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_r_sgl_flw_jsl_val"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_r_sgl_flw_jsl_ann_par"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_r_sgl_flw_njl_ann_par"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "key",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_r_sgl_flw_njl_val_flw"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_r_sgl_flw_njl_ann_par"
+            }
+          ]
         }
       ]
     },
@@ -5461,6 +5803,11 @@
     "_r_flw_val_flw",
     "_br_flw_val_flw",
     "_r_sgl_flw_val_flw",
+    "_r_flw_jsl_val",
+    "_br_flw_jsl_val",
+    "_r_sgl_flw_jsl_val",
+    "_br_sgl_flw_jsl_val",
+    "_b_sgl_flw_jsl_val",
     "_r_flw_njl_val_blk",
     "_br_flw_njl_val_blk",
     "_r_sgl_flw_njl_val_blk",
