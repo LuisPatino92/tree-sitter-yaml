@@ -28,7 +28,7 @@ module.exports = grammar({
     $._r_flw_sep_bgn,  $._br_flw_sep_bgn,                   // ,
     $._r_flw_key_bgn,  $._br_flw_key_bgn,                   // ?
     $._r_flw_jsv_bgn,  $._br_flw_jsv_bgn,                   // : (json key)
-    $._r_flw_njv_bgn,  $._br_flw_njv_bgn,
+    $._r_flw_njv_bgn,  $._br_flw_njv_bgn,                   // : (non-json key)
 
     // plain scalar (singleline in block/flow)
     $._r_sgl_pln_nul_blk,  $._br_sgl_pln_nul_blk, $._b_sgl_pln_nul_blk, $._r_sgl_pln_nul_flw,  $._br_sgl_pln_nul_flw,
@@ -93,6 +93,11 @@ module.exports = grammar({
     $._r_flw_val_flw,
     $._br_flw_val_flw,
     $._r_sgl_flw_val_flw,
+    $._r_flw_jsl_val,
+    $._br_flw_jsl_val,
+    $._r_sgl_flw_jsl_val,
+    $._br_sgl_flw_jsl_val,
+    $._b_sgl_flw_jsl_val,
     $._r_flw_njl_val_blk,
     $._br_flw_njl_val_blk,
     $._r_sgl_flw_njl_val_blk,
@@ -227,20 +232,28 @@ module.exports = grammar({
 
     // flow value in block
 
-    _r_flw_val_blk: $ => $._r_flw_njl_val_blk,
-    _br_flw_val_blk: $ => $._br_flw_njl_val_blk,
+    _r_flw_val_blk: $ => choice($._r_flw_jsl_val, $._r_flw_njl_val_blk),
+    _br_flw_val_blk: $ => choice($._br_flw_jsl_val, $._br_flw_njl_val_blk),
 
-    _r_sgl_flw_val_blk: $ => $._r_sgl_flw_njl_val_blk,
-    _br_sgl_flw_val_blk: $ => $._br_sgl_flw_njl_val_blk,
-    _b_sgl_flw_val_blk: $ => $._b_sgl_flw_njl_val_blk,
+    _r_sgl_flw_val_blk: $ => choice($._r_sgl_flw_jsl_val, $._r_sgl_flw_njl_val_blk),
+    _br_sgl_flw_val_blk: $ => choice($._br_sgl_flw_jsl_val, $._br_sgl_flw_njl_val_blk),
+    _b_sgl_flw_val_blk: $ => choice($._b_sgl_flw_jsl_val, $._b_sgl_flw_njl_val_blk),
 
     // flow value in flow
 
-    _r_flw_val_flw: $ => $._r_flw_njl_val_flw,
-    _br_flw_val_flw: $ => $._br_flw_njl_val_flw,
+    _r_flw_val_flw: $ => choice($._r_flw_jsl_val, $._r_flw_njl_val_flw),
+    _br_flw_val_flw: $ => choice($._br_flw_jsl_val, $._br_flw_njl_val_flw),
 
-    _r_sgl_flw_val_flw: $ => $._r_sgl_flw_njl_val_flw,
+    _r_sgl_flw_val_flw: $ => choice($._r_sgl_flw_jsl_val, $._r_sgl_flw_njl_val_flw),
 
+    // json-like flow value
+
+    _r_flw_jsl_val: $ => choice($._r_flw_seq_val, $._r_flw_map_val, $._r_pln_flw_val),
+    _br_flw_jsl_val: $ => choice($._br_flw_seq_val, $._br_flw_map_val, $._br_pln_flw_val),
+
+    _r_sgl_flw_jsl_val: $ => choice($._r_sgl_flw_seq_val, $._r_sgl_flw_map_val, $._r_sgl_pln_flw_val),
+    _br_sgl_flw_jsl_val: $ => choice($._br_sgl_flw_seq_val, $._br_sgl_flw_map_val, $._r_sgl_pln_flw_val),
+    _b_sgl_flw_jsl_val: $ => choice($._b_sgl_flw_seq_val, $._b_sgl_flw_map_val, $._r_sgl_pln_flw_val),
 
     // non-json-like flow value in block
 
@@ -330,12 +343,12 @@ module.exports = grammar({
 
     // implicit flow pair
 
-    _r_flw_imp_r_par: $ => seq(field("key", $._r_flw_njl_val_flw), $._r_flw_njl_ann_par),
-    _r_flw_imp_br_par: $ => seq(field("key", $._r_flw_njl_val_flw), $._br_flw_njl_ann_par),
-    _br_flw_imp_r_par: $ => seq(field("key", $._br_flw_njl_val_flw), $._r_flw_njl_ann_par),
-    _br_flw_imp_br_par: $ => seq(field("key", $._br_flw_njl_val_flw), $._br_flw_njl_ann_par),
+    _r_flw_imp_r_par: $ => choice(seq(field("key", $._r_flw_jsl_val), $._r_flw_jsl_ann_par), seq(field("key", $._r_flw_njl_val_flw), $._r_flw_njl_ann_par)),
+    _r_flw_imp_br_par: $ => choice(seq(field("key", $._r_flw_jsl_val), $._br_flw_jsl_ann_par), seq(field("key", $._r_flw_njl_val_flw), $._br_flw_njl_ann_par)),
+    _br_flw_imp_r_par: $ => choice(seq(field("key", $._br_flw_jsl_val), $._r_flw_jsl_ann_par), seq(field("key", $._br_flw_njl_val_flw), $._r_flw_njl_ann_par)),
+    _br_flw_imp_br_par: $ => choice(seq(field("key", $._br_flw_jsl_val), $._br_flw_jsl_ann_par), seq(field("key", $._br_flw_njl_val_flw), $._br_flw_njl_ann_par)),
 
-    _r_sgl_flw_imp_par: $ => seq(field("key", $._r_sgl_flw_njl_val_flw), $._r_sgl_flw_njl_ann_par),
+    _r_sgl_flw_imp_par: $ => choice(seq(field("key", $._r_sgl_flw_jsl_val), $._r_sgl_flw_jsl_ann_par), seq(field("key", $._r_sgl_flw_njl_val_flw), $._r_sgl_flw_njl_ann_par)),
 
     // anonymous flow pair
 
