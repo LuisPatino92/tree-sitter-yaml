@@ -565,7 +565,7 @@ struct Scanner {
     bool is_lka_saf = (this->*is_plain_safe)(LKA);
     if (is_lka_saf || is_lka_wsp) {
       for (;;) {
-        if (is_lka_saf && LKA != '#' && LKA != ':') {ADV();MRK_END();UPD_SCH_STT();}
+        if (is_lka_saf && LKA != '#') {ADV();MRK_END();UPD_SCH_STT();}
         else if (is_cur_saf && LKA == '#') {ADV();MRK_END();UPD_SCH_STT();}
         else if (is_lka_wsp) {ADV();UPD_SCH_STT();}
         else if (LKA == ':') ADV(); // check later
@@ -718,6 +718,29 @@ struct Scanner {
           if (is_b_blk_key_bgn) RET_SYM(B_BLK_KEY_BGN);
           if (is_r_flw_key_bgn) RET_SYM(R_FLW_KEY_BGN);
           if (is_br_flw_key_bgn) RET_SYM(BR_FLW_KEY_BGN);
+        }
+      }
+    } else if (LKA == ':') {
+      if (VLD[R_FLW_JSV_BGN] && is_r) {ADV();MRK_END();RET_SYM(R_FLW_JSV_BGN);}
+      if (VLD[BR_FLW_JSV_BGN] && is_br) {ADV();MRK_END();RET_SYM(BR_FLW_JSV_BGN);}
+      bool is_r_blk_val_bgn = VLD[R_BLK_VAL_BGN] && is_r;
+      bool is_br_blk_val_bgn = VLD[BR_BLK_VAL_BGN] && is_br;
+      bool is_b_blk_val_bgn = VLD[B_BLK_VAL_BGN] && is_b;
+      bool is_r_blk_imp_bgn = VLD[R_BLK_IMP_BGN] && is_r;
+      bool is_r_flw_njv_bgn = VLD[R_FLW_NJV_BGN] && is_r;
+      bool is_br_flw_njv_bgn = VLD[BR_FLW_NJV_BGN] && is_br;
+      if (is_r_blk_val_bgn || is_br_blk_val_bgn || is_b_blk_val_bgn || is_r_blk_imp_bgn || is_r_flw_njv_bgn || is_br_flw_njv_bgn) {
+        ADV();
+        bool is_lka_wht = is_wht(LKA);
+        if (is_lka_wht) {
+          if (is_r_blk_val_bgn) {PUSH_BGN_IND(IND_MAP);MRK_END();RET_SYM(R_BLK_VAL_BGN);}
+          if (is_br_blk_val_bgn) {PUSH_BGN_IND(IND_MAP);MRK_END();RET_SYM(BR_BLK_VAL_BGN);}
+          if (is_b_blk_val_bgn) {MRK_END();RET_SYM(B_BLK_VAL_BGN);}
+          if (is_r_blk_imp_bgn) {MAY_PUSH_IMP_IND();MRK_END();RET_SYM(R_BLK_IMP_BGN);}
+        }
+        if (is_lka_wht || LKA == ',' || LKA == ']' || LKA == '}') {
+          if (is_r_flw_njv_bgn) {MRK_END();RET_SYM(R_FLW_NJV_BGN);}
+          if (is_br_flw_njv_bgn) {MRK_END();RET_SYM(BR_FLW_NJV_BGN);}
         }
       }
     } else if (LKA == '-') {
