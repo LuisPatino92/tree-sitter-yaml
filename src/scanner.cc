@@ -568,7 +568,6 @@ struct Scanner {
         if (is_lka_saf && LKA != '#' && LKA != ':') {ADV();MRK_END();UPD_SCH_STT();}
         else if (is_cur_saf && LKA == '#') {ADV();MRK_END();UPD_SCH_STT();}
         else if (is_lka_wsp) {ADV();UPD_SCH_STT();}
-        else if (LKA == ':') ADV(); // check later
         else break;
 
         is_cur_wsp = is_lka_wsp;
@@ -578,6 +577,7 @@ struct Scanner {
 
         if (cur_chr == ':') {
           if (is_lka_saf) {MRK_END();UPD_SCH_STT();}
+          else return SCN_FAIL;
         }
       }
     } else return SCN_STOP;
