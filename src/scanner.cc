@@ -530,7 +530,6 @@ struct Scanner {
   }
 
   bool scn_dqt_str_cnt(TSLexer *lexer, TSSymbol result_symbol) {
-    if (!is_ns_char(LKA)) return false;
     if (cur_col == 0 && scn_drs_doc_end(lexer)) {POP_IND();RET_SYM(BL);}
     else ADV();
     MRK_END();
@@ -549,7 +548,6 @@ struct Scanner {
   }
 
   bool scn_sqt_str_cnt(TSLexer *lexer, TSSymbol result_symbol) {
-    if (!is_ns_char(LKA)) return false;
     if (cur_col == 0 && scn_drs_doc_end(lexer)) {POP_IND();RET_SYM(BL);}
     else ADV();
     MRK_END();
