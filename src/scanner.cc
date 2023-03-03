@@ -32,15 +32,6 @@ enum TokenType {
   R_FLW_KEY_BGN,  BR_FLW_KEY_BGN,
   R_FLW_JSV_BGN,  BR_FLW_JSV_BGN,
   R_FLW_NJV_BGN,  BR_FLW_NJV_BGN,
-  R_DQT_STR_BGN,  BR_DQT_STR_BGN, B_DQT_STR_BGN,
-  R_DQT_STR_CTN,  BR_DQT_STR_CTN,
-  R_DQT_ESC_NWL,  BR_DQT_ESC_NWL,
-  R_DQT_ESC_SEQ,  BR_DQT_ESC_SEQ,
-  R_DQT_STR_END,  BR_DQT_STR_END,
-  R_SQT_STR_BGN,  BR_SQT_STR_BGN, B_SQT_STR_BGN,
-  R_SQT_STR_CTN,  BR_SQT_STR_CTN,
-  R_SQT_ESC_SQT,  BR_SQT_ESC_SQT,
-  R_SQT_STR_END,  BR_SQT_STR_END,
 
   R_SGL_PLN_NUL_BLK, BR_SGL_PLN_NUL_BLK, B_SGL_PLN_NUL_BLK, R_SGL_PLN_NUL_FLW, BR_SGL_PLN_NUL_FLW,
   R_SGL_PLN_BOL_BLK, BR_SGL_PLN_BOL_BLK, B_SGL_PLN_BOL_BLK, R_SGL_PLN_BOL_FLW, BR_SGL_PLN_BOL_FLW,
@@ -502,70 +493,6 @@ struct Scanner {
     RET_SYM(result_symbol);
   }
 
-  bool scn_dqt_esc_seq(TSLexer *lexer, TSSymbol result_symbol) {
-    uint16_t i;
-    switch (LKA) {
-      case '0': case 'a': case 'b': case 't': case '\t': case 'n': case 'v':
-      case 'r': case 'e': case ' ': case '"': case '/': case '\\': case 'N':
-      case '_': case 'L': case 'P':
-        ADV();
-        break;
-      case 'U':
-        ADV();
-        for (i = 0; i < 8; i++) if (is_ns_hex_digit(LKA)) ADV(); else return false;
-        break;
-      case 'u':
-        ADV();
-        for (i = 0; i < 4; i++) if (is_ns_hex_digit(LKA)) ADV(); else return false;
-        break;
-      case 'x':
-        ADV();
-        for (i = 0; i < 2; i++) if (is_ns_hex_digit(LKA)) ADV(); else return false;
-        break;
-      default:
-        return false;
-    }
-    MRK_END();
-    RET_SYM(result_symbol);
-  }
-
-  bool scn_dqt_str_cnt(TSLexer *lexer, TSSymbol result_symbol) {
-    if (!is_nb_json(LKA)) return false;
-    if (cur_col == 0 && scn_drs_doc_end(lexer)) {POP_IND();RET_SYM(BL);}
-    else ADV();
-    MRK_END();
-    for (;;) {
-      if (is_nb_json(LKA)) {
-        ADV();
-        while (is_nb_json(LKA)) ADV();
-        MRK_END();
-      }
-      if (is_wsp(LKA)) {
-        ADV();
-        while (is_wsp(LKA)) ADV();
-      } else break;
-    }
-    RET_SYM(result_symbol);
-  }
-
-  bool scn_sqt_str_cnt(TSLexer *lexer, TSSymbol result_symbol) {
-    if (!is_nb_json(LKA)) return false;
-    if (cur_col == 0 && scn_drs_doc_end(lexer)) {POP_IND();RET_SYM(BL);}
-    else ADV();
-    MRK_END();
-    for (;;) {
-      if (is_nb_json(LKA)) {
-        ADV();
-        while (is_nb_json(LKA)) ADV();
-        MRK_END();
-      }
-      if (is_wsp(LKA)) {
-        ADV();
-        while (is_wsp(LKA)) ADV();
-      } else break;
-    }
-    RET_SYM(result_symbol);
-  }
 
   bool scn_blk_str_bgn(TSLexer *lexer, TSSymbol result_symbol) {
     if (LKA != '|' && LKA != '>') return false;
@@ -677,8 +604,6 @@ struct Scanner {
     init();
     MRK_END();
 
-    bool allow_comment = !(VLD[R_DQT_STR_CTN] || VLD[BR_DQT_STR_CTN] || VLD[R_SQT_STR_CTN] || VLD[BR_SQT_STR_CTN]);
-
     vector<int16_t>::reverse_iterator ind_ptr = ind_len_stk.rbegin();
     vector<int16_t>::reverse_iterator ind_end = ind_len_stk.rend();
     int16_t cur_ind = *ind_ptr++;
@@ -699,7 +624,7 @@ struct Scanner {
         has_tab_ind = false;
         leading_spaces = 0;
         SKP_NWL();
-      } else if (allow_comment && LKA == '#') {
+      } else if (LKA == '#') {
         if (VLD[BR_BLK_STR_CTN] && VLD[BL] && cur_col <= cur_ind) {POP_IND();RET_SYM(BL);}
         if (
           VLD[BR_BLK_STR_CTN]
@@ -744,16 +669,6 @@ struct Scanner {
     if (VLD[R_DIR_RSV_PRM] && is_r) return scn_dir_rsv_prm(lexer, R_DIR_RSV_PRM);
     if (VLD[BR_BLK_STR_CTN] && is_br && scn_blk_str_cnt(lexer, BR_BLK_STR_CTN)) return true;
 
-    if (
-      (VLD[R_DQT_STR_CTN] && is_r && scn_dqt_str_cnt(lexer, R_DQT_STR_CTN))
-      || (VLD[BR_DQT_STR_CTN] && is_br && scn_dqt_str_cnt(lexer, BR_DQT_STR_CTN))
-    ) return true;
-
-    if (
-      (VLD[R_SQT_STR_CTN] && is_r && scn_sqt_str_cnt(lexer, R_SQT_STR_CTN))
-      || (VLD[BR_SQT_STR_CTN] && is_br && scn_sqt_str_cnt(lexer, BR_SQT_STR_CTN))
-    ) return true;
-
     if (VLD[R_ACR_CTN] && is_r) return scn_acr_ctn(lexer, R_ACR_CTN);
     if (VLD[R_ALS_CTN] && is_r) return scn_als_ctn(lexer, R_ALS_CTN);
 
@@ -788,26 +703,6 @@ struct Scanner {
     } else if (LKA == ',') {
       if (VLD[R_FLW_SEP_BGN] && is_r) {ADV();MRK_END();RET_SYM(R_FLW_SEP_BGN)}
       if (VLD[BR_FLW_SEP_BGN] && is_br) {ADV();MRK_END();RET_SYM(BR_FLW_SEP_BGN)}
-    } else if (LKA == '"') {
-      if (VLD[R_DQT_STR_BGN] && is_r) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(R_DQT_STR_BGN)}
-      if (VLD[BR_DQT_STR_BGN] && is_br) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(BR_DQT_STR_BGN)}
-      if (VLD[B_DQT_STR_BGN] && is_b) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(B_DQT_STR_BGN)}
-      if (VLD[R_DQT_STR_END] && is_r) {ADV();MRK_END();RET_SYM(R_DQT_STR_END)}
-      if (VLD[BR_DQT_STR_END] && is_br) {ADV();MRK_END();RET_SYM(BR_DQT_STR_END)}
-    } else if (LKA == '\'') {
-      if (VLD[R_SQT_STR_BGN] && is_r) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(R_SQT_STR_BGN)}
-      if (VLD[BR_SQT_STR_BGN] && is_br) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(BR_SQT_STR_BGN)}
-      if (VLD[B_SQT_STR_BGN] && is_b) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(B_SQT_STR_BGN)}
-      if (VLD[R_SQT_STR_END] && is_r) {
-        ADV();
-        if (LKA == '\'') {ADV();MRK_END();RET_SYM(R_SQT_ESC_SQT)}
-        else {MRK_END();RET_SYM(R_SQT_STR_END)}
-      }
-      if (VLD[BR_SQT_STR_END] && is_br) {
-        ADV();
-        if (LKA == '\'') {ADV();MRK_END();RET_SYM(BR_SQT_ESC_SQT)}
-        else {MRK_END();RET_SYM(BR_SQT_STR_END)}
-      }
     } else if (LKA == '?') {
       bool is_r_blk_key_bgn = VLD[R_BLK_KEY_BGN] && is_r;
       bool is_br_blk_key_bgn = VLD[BR_BLK_KEY_BGN] && is_br;
@@ -885,21 +780,6 @@ struct Scanner {
             }
           }
         }
-      }
-    } else if (LKA == '\\') {
-      bool is_r_dqt_esc_nwl = VLD[R_DQT_ESC_NWL] && is_r;
-      bool is_br_dqt_esc_nwl = VLD[BR_DQT_ESC_NWL] && is_br;
-      bool is_r_dqt_esc_seq = VLD[R_DQT_ESC_SEQ] && is_r;
-      bool is_br_dqt_esc_seq = VLD[BR_DQT_ESC_SEQ] && is_br;
-      if (is_r_dqt_esc_nwl || is_br_dqt_esc_nwl || is_r_dqt_esc_seq || is_br_dqt_esc_seq) {
-        ADV();
-        if (is_nwl(LKA)) {
-          if (is_r_dqt_esc_nwl) {MRK_END();RET_SYM(R_DQT_ESC_NWL)}
-          if (is_br_dqt_esc_nwl) {MRK_END();RET_SYM(BR_DQT_ESC_NWL)}
-        }
-        if (is_r_dqt_esc_seq) return scn_dqt_esc_seq(lexer, R_DQT_ESC_SEQ);
-        if (is_br_dqt_esc_seq) return scn_dqt_esc_seq(lexer, BR_DQT_ESC_SEQ);
-        return false;
       }
     } else if (LKA == '|') {
       if (VLD[R_BLK_LIT_BGN] && is_r) return scn_blk_str_bgn(lexer, R_BLK_LIT_BGN);
