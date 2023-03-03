@@ -2539,7 +2539,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "_r_sgl_pln_blk_val"
+            "name": "_r_sgl_pln_flw_val"
           },
           "named": true,
           "value": "flow_node"
