@@ -385,12 +385,12 @@ module.exports = grammar({
     _br_sgl_dqt_str_val: $ => choice($._br_sgl_dqt_str, seq($._br_sgl_prp, $._r_sgl_dqt_str)),
     _b_sgl_dqt_str_val: $ => choice($._b_sgl_dqt_str, seq($._b_sgl_prp, $._r_sgl_dqt_str)),
 
-    _r_dqt_str: $ => seq($._r_dqt_str_bgn, optional($._r_sgl_dqt_ctn), optional($._r_dqt_esc_nwl), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
-    _br_dqt_str: $ => seq($._br_dqt_str_bgn, optional($._r_sgl_dqt_ctn), optional($._r_dqt_esc_nwl), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
+    _r_dqt_str: $ => seq($._r_dqt_str_bgn, $._r_sgl_dqt_ctn, optional($._r_dqt_esc_nwl), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
+    _br_dqt_str: $ => seq($._br_dqt_str_bgn, $._r_sgl_dqt_ctn, optional($._r_dqt_esc_nwl), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
 
-    _r_sgl_dqt_str: $ => seq($._r_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
-    _br_sgl_dqt_str: $ => seq($._br_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
-    _b_sgl_dqt_str: $ => seq($._b_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
+    _r_sgl_dqt_str: $ => seq($._r_dqt_str_bgn, $._r_sgl_dqt_ctn, $._r_dqt_str_end),
+    _br_sgl_dqt_str: $ => seq($._br_dqt_str_bgn, $._r_sgl_dqt_ctn, $._r_dqt_str_end),
+    _b_sgl_dqt_str: $ => seq($._b_dqt_str_bgn, $._r_sgl_dqt_ctn, $._r_dqt_str_end),
 
     _r_sgl_dqt_ctn: $ => repeat1(choice($._r_dqt_str_ctn, $._r_dqt_esc_seq)),
     _br_mtl_dqt_ctn: $ => choice($._br_dqt_esc_nwl, seq(choice($._br_dqt_str_ctn, $._br_dqt_esc_seq), repeat(choice($._r_dqt_str_ctn, $._r_dqt_esc_seq)), optional($._r_dqt_esc_nwl))),
@@ -404,12 +404,12 @@ module.exports = grammar({
     _br_sgl_sqt_str_val: $ => choice($._br_sgl_sqt_str, seq($._br_sgl_prp, $._r_sgl_sqt_str)),
     _b_sgl_sqt_str_val: $ => choice($._b_sgl_sqt_str, seq($._b_sgl_prp, $._r_sgl_sqt_str)),
 
-    _r_sqt_str: $ => seq($._r_sqt_str_bgn, optional($._r_sgl_sqt_ctn), repeat($._br_mtl_sqt_ctn), choice($._r_sqt_str_end, $._br_sqt_str_end)),
-    _br_sqt_str: $ => seq($._br_sqt_str_bgn, optional($._r_sgl_sqt_ctn), repeat($._br_mtl_sqt_ctn), choice($._r_sqt_str_end, $._br_sqt_str_end)),
+    _r_sqt_str: $ => seq($._r_sqt_str_bgn, $._r_sgl_sqt_ctn, repeat($._br_mtl_sqt_ctn), choice($._r_sqt_str_end, $._br_sqt_str_end)),
+    _br_sqt_str: $ => seq($._br_sqt_str_bgn, $._r_sgl_sqt_ctn, repeat($._br_mtl_sqt_ctn), choice($._r_sqt_str_end, $._br_sqt_str_end)),
 
-    _r_sgl_sqt_str: $ => seq($._r_sqt_str_bgn, optional($._r_sgl_sqt_ctn), $._r_sqt_str_end),
-    _br_sgl_sqt_str: $ => seq($._br_sqt_str_bgn, optional($._r_sgl_sqt_ctn), $._r_sqt_str_end),
-    _b_sgl_sqt_str: $ => seq($._b_sqt_str_bgn, optional($._r_sgl_sqt_ctn), $._r_sqt_str_end),
+    _r_sgl_sqt_str: $ => seq($._r_sqt_str_bgn, $._r_sgl_sqt_ctn, $._r_sqt_str_end),
+    _br_sgl_sqt_str: $ => seq($._br_sqt_str_bgn, $._r_sgl_sqt_ctn, $._r_sqt_str_end),
+    _b_sgl_sqt_str: $ => seq($._b_sqt_str_bgn, $._r_sgl_sqt_ctn, $._r_sqt_str_end),
 
     _r_sgl_sqt_ctn: $ => repeat1(choice($._r_sqt_str_ctn, $._r_sqt_esc_sqt)),
     _br_mtl_sqt_ctn: $ => seq(choice($._br_sqt_str_ctn, $._br_sqt_esc_sqt), repeat(choice($._r_sqt_str_ctn, $._r_sqt_esc_sqt))),

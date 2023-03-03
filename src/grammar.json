@@ -4841,16 +4841,8 @@
           "value": "\""
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_dqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_dqt_ctn"
         },
         {
           "type": "CHOICE",
@@ -4914,16 +4906,8 @@
           "value": "\""
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_dqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_dqt_ctn"
         },
         {
           "type": "CHOICE",
@@ -4987,16 +4971,8 @@
           "value": "\""
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_dqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_dqt_ctn"
         },
         {
           "type": "ALIAS",
@@ -5022,16 +4998,8 @@
           "value": "\""
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_dqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_dqt_ctn"
         },
         {
           "type": "ALIAS",
@@ -5057,16 +5025,8 @@
           "value": "\""
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_dqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_dqt_ctn"
         },
         {
           "type": "ALIAS",
@@ -5376,16 +5336,8 @@
           "value": "'"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_sqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_sqt_ctn"
         },
         {
           "type": "REPEAT",
@@ -5432,16 +5384,8 @@
           "value": "'"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_sqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_sqt_ctn"
         },
         {
           "type": "REPEAT",
@@ -5488,16 +5432,8 @@
           "value": "'"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_sqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_sqt_ctn"
         },
         {
           "type": "ALIAS",
@@ -5523,16 +5459,8 @@
           "value": "'"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_sqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_sqt_ctn"
         },
         {
           "type": "ALIAS",
@@ -5558,16 +5486,8 @@
           "value": "'"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_r_sgl_sqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_r_sgl_sqt_ctn"
         },
         {
           "type": "ALIAS",
