@@ -180,6 +180,21 @@
     }
   },
   {
+    "type": "double_quote_scalar",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "flow_mapping",
     "named": true,
     "fields": {},
@@ -215,6 +230,10 @@
           "named": true
         },
         {
+          "type": "double_quote_scalar",
+          "named": true
+        },
+        {
           "type": "flow_mapping",
           "named": true
         },
@@ -224,6 +243,10 @@
         },
         {
           "type": "plain_scalar",
+          "named": true
+        },
+        {
+          "type": "single_quote_scalar",
           "named": true
         },
         {
@@ -329,6 +352,11 @@
     }
   },
   {
+    "type": "single_quote_scalar",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "stream",
     "named": true,
     "fields": {},
@@ -378,7 +406,15 @@
     }
   },
   {
+    "type": "\"",
+    "named": false
+  },
+  {
     "type": "&",
+    "named": false
+  },
+  {
+    "type": "'",
     "named": false
   },
   {
@@ -443,6 +479,10 @@
   },
   {
     "type": "directive_parameter",
+    "named": true
+  },
+  {
+    "type": "escape_sequence",
     "named": true
   },
   {
