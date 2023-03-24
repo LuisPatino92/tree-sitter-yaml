@@ -31,7 +31,6 @@ module.exports = grammar({
     $._r_flw_njv_bgn,  $._br_flw_njv_bgn,                   // : (non-json key)
     $._r_dqt_str_bgn,  $._br_dqt_str_bgn, $._b_dqt_str_bgn, // " (start)
     $._r_dqt_str_ctn,  $._br_dqt_str_ctn,                   // double quote scalar content
-    $._r_dqt_esc_nwl,  $._br_dqt_esc_nwl,                   // escape newline
     $._r_dqt_str_end,  $._br_dqt_str_end,                   // " (end)
     $._r_sqt_str_bgn,  $._br_sqt_str_bgn, $._b_sqt_str_bgn, // ' (start)
     $._r_sqt_str_ctn,  $._br_sqt_str_ctn,                   // single quote scalar content
@@ -383,15 +382,15 @@ module.exports = grammar({
     _br_sgl_dqt_str_val: $ => choice($._br_sgl_dqt_str, seq($._br_sgl_prp, $._r_sgl_dqt_str)),
     _b_sgl_dqt_str_val: $ => choice($._b_sgl_dqt_str, seq($._b_sgl_prp, $._r_sgl_dqt_str)),
 
-    _r_dqt_str: $ => seq($._r_dqt_str_bgn, optional($._r_sgl_dqt_ctn), optional($._r_dqt_esc_nwl), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
-    _br_dqt_str: $ => seq($._br_dqt_str_bgn, optional($._r_sgl_dqt_ctn), optional($._r_dqt_esc_nwl), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
+    _r_dqt_str: $ => seq($._r_dqt_str_bgn, optional($._r_sgl_dqt_ctn), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
+    _br_dqt_str: $ => seq($._br_dqt_str_bgn, optional($._r_sgl_dqt_ctn), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
 
     _r_sgl_dqt_str: $ => seq($._r_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
     _br_sgl_dqt_str: $ => seq($._br_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
     _b_sgl_dqt_str: $ => seq($._b_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
 
     _r_sgl_dqt_ctn: $ => repeat1($._r_dqt_str_ctn),
-    _br_mtl_dqt_ctn: $ => choice($._br_dqt_esc_nwl, seq($._br_dqt_str_ctn, repeat($._r_dqt_str_ctn), optional($._r_dqt_esc_nwl))),
+    _br_mtl_dqt_ctn: $ => seq($._br_dqt_str_ctn, repeat($._r_dqt_str_ctn)),
 
     // single quote scalar
 
@@ -508,7 +507,7 @@ module.exports = global_alias(global_alias(module.exports, {
   ..._("single_quote_scalar", "_r_sqt_str", "_br_sqt_str", "_r_sgl_sqt_str", "_br_sgl_sqt_str", "_b_sgl_sqt_str"),
   ..._("plain_scalar", "_r_mtl_pln_blk", "_br_mtl_pln_blk", "_r_sgl_pln_blk", "_br_sgl_pln_blk", "_b_sgl_pln_blk",
                        "_r_mtl_pln_flw", "_br_mtl_pln_flw", "_r_sgl_pln_flw", "_br_sgl_pln_flw"),
-  ..._("escape_sequence", "_r_dqt_esc_nwl", "_br_dqt_esc_nwl"),
+  ..._("quote_content", "_br_dqt_str_ctn", "_r_dqt_str_ctn", "_br_sqt_str_ctn", "_r_sqt_str_ctn"),
   ..._("null_scalar", "_r_sgl_pln_nul_blk", "_br_sgl_pln_nul_blk", "_b_sgl_pln_nul_blk", "_r_sgl_pln_nul_flw", "_br_sgl_pln_nul_flw"),
   ..._("boolean_scalar", "_r_sgl_pln_bol_blk", "_br_sgl_pln_bol_blk", "_b_sgl_pln_bol_blk", "_r_sgl_pln_bol_flw", "_br_sgl_pln_bol_flw"),
   ..._("integer_scalar", "_r_sgl_pln_int_blk", "_br_sgl_pln_int_blk", "_b_sgl_pln_int_blk", "_r_sgl_pln_int_flw", "_br_sgl_pln_int_flw"),

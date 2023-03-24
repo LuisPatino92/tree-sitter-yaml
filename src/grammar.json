@@ -4853,23 +4853,6 @@
           ]
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_r_dqt_esc_nwl"
-              },
-              "named": true,
-              "value": "escape_sequence"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
@@ -4919,23 +4902,6 @@
             {
               "type": "SYMBOL",
               "name": "_r_sgl_dqt_ctn"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_r_dqt_esc_nwl"
-              },
-              "named": true,
-              "value": "escape_sequence"
             },
             {
               "type": "BLANK"
@@ -5082,54 +5048,38 @@
     "_r_sgl_dqt_ctn": {
       "type": "REPEAT1",
       "content": {
-        "type": "SYMBOL",
-        "name": "_r_dqt_str_ctn"
+        "type": "ALIAS",
+        "content": {
+          "type": "SYMBOL",
+          "name": "_r_dqt_str_ctn"
+        },
+        "named": true,
+        "value": "quote_content"
       }
     },
     "_br_mtl_dqt_ctn": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "_br_dqt_esc_nwl"
+            "name": "_br_dqt_str_ctn"
           },
           "named": true,
-          "value": "escape_sequence"
+          "value": "quote_content"
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
+          "type": "REPEAT",
+          "content": {
+            "type": "ALIAS",
+            "content": {
               "type": "SYMBOL",
-              "name": "_br_dqt_str_ctn"
+              "name": "_r_dqt_str_ctn"
             },
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_r_dqt_str_ctn"
-              }
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_r_dqt_esc_nwl"
-                  },
-                  "named": true,
-                  "value": "escape_sequence"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
+            "named": true,
+            "value": "quote_content"
+          }
         }
       ]
     },
@@ -5541,22 +5491,37 @@
     "_r_sgl_sqt_ctn": {
       "type": "REPEAT1",
       "content": {
-        "type": "SYMBOL",
-        "name": "_r_sqt_str_ctn"
+        "type": "ALIAS",
+        "content": {
+          "type": "SYMBOL",
+          "name": "_r_sqt_str_ctn"
+        },
+        "named": true,
+        "value": "quote_content"
       }
     },
     "_br_mtl_sqt_ctn": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_br_sqt_str_ctn"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_br_sqt_str_ctn"
+          },
+          "named": true,
+          "value": "quote_content"
         },
         {
           "type": "REPEAT",
           "content": {
-            "type": "SYMBOL",
-            "name": "_r_sqt_str_ctn"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_r_sqt_str_ctn"
+            },
+            "named": true,
+            "value": "quote_content"
           }
         }
       ]
@@ -6612,14 +6577,6 @@
     {
       "type": "SYMBOL",
       "name": "_br_dqt_str_ctn"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_r_dqt_esc_nwl"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_br_dqt_esc_nwl"
     },
     {
       "type": "SYMBOL",

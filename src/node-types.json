@@ -188,7 +188,7 @@
       "required": false,
       "types": [
         {
-          "type": "escape_sequence",
+          "type": "quote_content",
           "named": true
         }
       ]
@@ -354,7 +354,17 @@
   {
     "type": "single_quote_scalar",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "quote_content",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "stream",
@@ -482,10 +492,6 @@
     "named": true
   },
   {
-    "type": "escape_sequence",
-    "named": true
-  },
-  {
     "type": "float_scalar",
     "named": true
   },
@@ -495,6 +501,10 @@
   },
   {
     "type": "null_scalar",
+    "named": true
+  },
+  {
+    "type": "quote_content",
     "named": true
   },
   {
