@@ -29,6 +29,12 @@ module.exports = grammar({
     $._r_flw_key_bgn,  $._br_flw_key_bgn,                   // ?
     $._r_flw_jsv_bgn,  $._br_flw_jsv_bgn,                   // : (json key)
     $._r_flw_njv_bgn,  $._br_flw_njv_bgn,                   // : (non-json key)
+    $._r_dqt_str_bgn,  $._br_dqt_str_bgn, $._b_dqt_str_bgn, // " (start)
+    $._r_dqt_str_ctn,  $._br_dqt_str_ctn,                   // double quote scalar content
+    $._r_dqt_str_end,  $._br_dqt_str_end,                   // " (end)
+    $._r_sqt_str_bgn,  $._br_sqt_str_bgn, $._b_sqt_str_bgn, // ' (start)
+    $._r_sqt_str_ctn,  $._br_sqt_str_ctn,                   // single quote scalar content
+    $._r_sqt_str_end,  $._br_sqt_str_end,                   // ' (end)
 
     // plain scalar (singleline in block/flow)
     $._r_sgl_pln_nul_blk,  $._br_sgl_pln_nul_blk, $._b_sgl_pln_nul_blk, $._r_sgl_pln_nul_flw,  $._br_sgl_pln_nul_flw,
@@ -61,6 +67,8 @@ module.exports = grammar({
     [$._r_flw_map_itm, $._r_sgl_flw_col_itm],
     [$._r_flw_njl_ann_par, $._r_sgl_flw_njl_ann_par],
     [$._r_flw_exp_par, $._r_sgl_flw_exp_par],
+    [$._r_dqt_str, $._r_sgl_dqt_str],
+    [$._r_sqt_str, $._r_sgl_sqt_str],
     [$._r_pln_flw_val, $._r_sgl_pln_flw_val],
 
     /**
@@ -96,6 +104,8 @@ module.exports = grammar({
     $._r_flw_jsl_val,
     $._br_flw_jsl_val,
     $._r_sgl_flw_jsl_val,
+    $._br_sgl_flw_jsl_val,
+    $._b_sgl_flw_jsl_val,
     $._r_flw_njl_val_blk,
     $._br_flw_njl_val_blk,
     $._r_sgl_flw_njl_val_blk,
@@ -234,8 +244,8 @@ module.exports = grammar({
     _br_flw_val_blk: $ => choice($._br_flw_jsl_val, $._br_flw_njl_val_blk),
 
     _r_sgl_flw_val_blk: $ => choice($._r_sgl_flw_jsl_val, $._r_sgl_flw_njl_val_blk),
-    _br_sgl_flw_val_blk: $ => $._br_sgl_flw_njl_val_blk,
-    _b_sgl_flw_val_blk: $ => $._b_sgl_flw_njl_val_blk,
+    _br_sgl_flw_val_blk: $ => choice($._br_sgl_flw_jsl_val, $._br_sgl_flw_njl_val_blk),
+    _b_sgl_flw_val_blk: $ => choice($._b_sgl_flw_jsl_val, $._b_sgl_flw_njl_val_blk),
 
     // flow value in flow
 
@@ -246,10 +256,12 @@ module.exports = grammar({
 
     // json-like flow value
 
-    _r_flw_jsl_val: $ => choice($._r_flw_seq_val, $._r_flw_map_val, $._r_pln_flw_val),
-    _br_flw_jsl_val: $ => choice($._br_flw_seq_val, $._br_flw_map_val, $._br_pln_flw_val),
+    _r_flw_jsl_val: $ => choice($._r_flw_seq_val, $._r_flw_map_val, $._r_dqt_str_val, $._r_sqt_str_val),
+    _br_flw_jsl_val: $ => choice($._br_flw_seq_val, $._br_flw_map_val, $._br_dqt_str_val, $._br_sqt_str_val),
 
-    _r_sgl_flw_jsl_val: $ => choice($._r_sgl_flw_seq_val, $._r_sgl_flw_map_val, $._r_sgl_pln_flw_val),
+    _r_sgl_flw_jsl_val: $ => choice($._r_sgl_flw_seq_val, $._r_sgl_flw_map_val, $._r_sgl_dqt_str_val, $._r_sgl_sqt_str_val),
+    _br_sgl_flw_jsl_val: $ => choice($._br_sgl_flw_seq_val, $._br_sgl_flw_map_val, $._br_sgl_dqt_str_val, $._br_sgl_sqt_str_val),
+    _b_sgl_flw_jsl_val: $ => choice($._b_sgl_flw_seq_val, $._b_sgl_flw_map_val, $._b_sgl_dqt_str_val, $._b_sgl_sqt_str_val),
 
     // non-json-like flow value in block
 
@@ -361,6 +373,44 @@ module.exports = grammar({
     _flw_ann_par_tal: $ => choice($._r_flw_val_flw, $._br_flw_val_flw),
     _sgl_flw_ann_par_tal: $ => $._r_sgl_flw_val_flw,
 
+    // double quote scalar
+
+    _r_dqt_str_val: $ => choice($._r_dqt_str, seq($._r_prp, choice($._r_dqt_str, $._br_dqt_str))),
+    _br_dqt_str_val: $ => choice($._br_dqt_str, seq($._br_prp, choice($._r_dqt_str, $._br_dqt_str))),
+
+    _r_sgl_dqt_str_val: $ => choice($._r_sgl_dqt_str, seq($._r_sgl_prp, $._r_sgl_dqt_str)),
+    _br_sgl_dqt_str_val: $ => choice($._br_sgl_dqt_str, seq($._br_sgl_prp, $._r_sgl_dqt_str)),
+    _b_sgl_dqt_str_val: $ => choice($._b_sgl_dqt_str, seq($._b_sgl_prp, $._r_sgl_dqt_str)),
+
+    _r_dqt_str: $ => seq($._r_dqt_str_bgn, optional($._r_sgl_dqt_ctn), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
+    _br_dqt_str: $ => seq($._br_dqt_str_bgn, optional($._r_sgl_dqt_ctn), repeat($._br_mtl_dqt_ctn), choice($._r_dqt_str_end, $._br_dqt_str_end)),
+
+    _r_sgl_dqt_str: $ => seq($._r_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
+    _br_sgl_dqt_str: $ => seq($._br_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
+    _b_sgl_dqt_str: $ => seq($._b_dqt_str_bgn, optional($._r_sgl_dqt_ctn), $._r_dqt_str_end),
+
+    _r_sgl_dqt_ctn: $ => repeat1($._r_dqt_str_ctn),
+    _br_mtl_dqt_ctn: $ => seq($._br_dqt_str_ctn, repeat($._r_dqt_str_ctn)),
+
+    // single quote scalar
+
+    _r_sqt_str_val: $ => choice($._r_sqt_str, seq($._r_prp, choice($._r_sqt_str, $._br_sqt_str))),
+    _br_sqt_str_val: $ => choice($._br_sqt_str, seq($._br_prp, choice($._r_sqt_str, $._br_sqt_str))),
+
+    _r_sgl_sqt_str_val: $ => choice($._r_sgl_sqt_str, seq($._r_sgl_prp, $._r_sgl_sqt_str)),
+    _br_sgl_sqt_str_val: $ => choice($._br_sgl_sqt_str, seq($._br_sgl_prp, $._r_sgl_sqt_str)),
+    _b_sgl_sqt_str_val: $ => choice($._b_sgl_sqt_str, seq($._b_sgl_prp, $._r_sgl_sqt_str)),
+
+    _r_sqt_str: $ => seq($._r_sqt_str_bgn, optional($._r_sgl_sqt_ctn), repeat($._br_mtl_sqt_ctn), choice($._r_sqt_str_end, $._br_sqt_str_end)),
+    _br_sqt_str: $ => seq($._br_sqt_str_bgn, optional($._r_sgl_sqt_ctn), repeat($._br_mtl_sqt_ctn), choice($._r_sqt_str_end, $._br_sqt_str_end)),
+
+    _r_sgl_sqt_str: $ => seq($._r_sqt_str_bgn, optional($._r_sgl_sqt_ctn), $._r_sqt_str_end),
+    _br_sgl_sqt_str: $ => seq($._br_sqt_str_bgn, optional($._r_sgl_sqt_ctn), $._r_sqt_str_end),
+    _b_sgl_sqt_str: $ => seq($._b_sqt_str_bgn, optional($._r_sgl_sqt_ctn), $._r_sqt_str_end),
+
+    _r_sgl_sqt_ctn: $ => repeat1($._r_sqt_str_ctn),
+    _br_mtl_sqt_ctn: $ => seq($._br_sqt_str_ctn, repeat($._r_sqt_str_ctn)),
+
     // plain scalar in block
 
     _r_pln_blk_val: $ => choice($._r_pln_blk, seq($._r_prp, choice($._r_pln_blk, $._br_pln_blk))),
@@ -449,10 +499,15 @@ module.exports = global_alias(global_alias(module.exports, {
   ..._(["flow_pair"], "_r_flw_exp_par", "_br_flw_exp_par", "_r_sgl_flw_exp_par",
                       "_r_flw_imp_r_par", "_r_flw_imp_br_par", "_br_flw_imp_r_par", "_br_flw_imp_br_par", "_r_sgl_flw_imp_par",
                       "_r_flw_njl_ann_par", "_br_flw_njl_ann_par", "_r_sgl_flw_njl_ann_par"),
+  ..._("flow_node", "_r_dqt_str_val", "_br_dqt_str_val", "_r_sgl_dqt_str_val", "_br_sgl_dqt_str_val", "_b_sgl_dqt_str_val"),
+  ..._("flow_node", "_r_sqt_str_val", "_br_sqt_str_val", "_r_sgl_sqt_str_val", "_br_sgl_sqt_str_val", "_b_sgl_sqt_str_val"),
   ..._("flow_node", "_r_pln_blk_val", "_br_pln_blk_val", "_r_sgl_pln_blk_val", "_br_sgl_pln_blk_val", "_b_sgl_pln_blk_val",
                     "_r_pln_flw_val", "_br_pln_flw_val", "_r_sgl_pln_flw_val"),
+  ..._("double_quote_scalar", "_r_dqt_str", "_br_dqt_str", "_r_sgl_dqt_str", "_br_sgl_dqt_str", "_b_sgl_dqt_str"),
+  ..._("single_quote_scalar", "_r_sqt_str", "_br_sqt_str", "_r_sgl_sqt_str", "_br_sgl_sqt_str", "_b_sgl_sqt_str"),
   ..._("plain_scalar", "_r_mtl_pln_blk", "_br_mtl_pln_blk", "_r_sgl_pln_blk", "_br_sgl_pln_blk", "_b_sgl_pln_blk",
                        "_r_mtl_pln_flw", "_br_mtl_pln_flw", "_r_sgl_pln_flw", "_br_sgl_pln_flw"),
+  ..._("quote_content", "_br_dqt_str_ctn", "_r_dqt_str_ctn", "_br_sqt_str_ctn", "_r_sqt_str_ctn"),
   ..._("null_scalar", "_r_sgl_pln_nul_blk", "_br_sgl_pln_nul_blk", "_b_sgl_pln_nul_blk", "_r_sgl_pln_nul_flw", "_br_sgl_pln_nul_flw"),
   ..._("boolean_scalar", "_r_sgl_pln_bol_blk", "_br_sgl_pln_bol_blk", "_b_sgl_pln_bol_blk", "_r_sgl_pln_bol_flw", "_br_sgl_pln_bol_flw"),
   ..._("integer_scalar", "_r_sgl_pln_int_blk", "_br_sgl_pln_int_blk", "_b_sgl_pln_int_blk", "_r_sgl_pln_int_flw", "_br_sgl_pln_int_flw"),
@@ -476,6 +531,10 @@ module.exports = global_alias(global_alias(module.exports, {
   ..._("?", "_r_flw_key_bgn", "_br_flw_key_bgn"),
   ..._(":", "_r_flw_jsv_bgn", "_br_flw_jsv_bgn"),
   ..._(":", "_r_flw_njv_bgn", "_br_flw_njv_bgn"),
+  ..._("\"", "_r_dqt_str_bgn", "_br_dqt_str_bgn", "_b_dqt_str_bgn"),
+  ..._("\"", "_r_dqt_str_end", "_br_dqt_str_end"),
+  ..._("'", "_r_sqt_str_bgn", "_br_sqt_str_bgn", "_b_sqt_str_bgn"),
+  ..._("'", "_r_sqt_str_end", "_br_sqt_str_end"),
   ..._("*", "_r_als_bgn", "_br_als_bgn", "_b_als_bgn"),
   ..._("&", "_r_acr_bgn", "_br_acr_bgn", "_b_acr_bgn"),
 });
