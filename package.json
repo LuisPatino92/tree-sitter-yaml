@@ -28,7 +28,8 @@
     }
   },
   "dependencies": {
-    "nan": "^2.14.0"
+    "nan": "^2.14.0",
+    "tree-sitter-cli": "^0.20.7"
   },
   "devDependencies": {
     "get-stdin": "^8.0.0",
