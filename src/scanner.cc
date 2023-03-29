@@ -768,14 +768,14 @@ struct Scanner {
       if (VLD[B_FLW_SEQ_BGN] && is_b) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(B_FLW_SEQ_BGN)}
     } else if (LKA == ']') {
       if (VLD[R_FLW_SEQ_END] && is_r) {ADV();MRK_END();RET_SYM(R_FLW_SEQ_END)}
-      if (VLD[BR_FLW_SEQ_END] && is_br) {ADV();MRK_END();RET_SYM(BR_FLW_SEQ_END)}
+      if (VLD[BR_FLW_SEQ_END]) {ADV();MRK_END();RET_SYM(BR_FLW_SEQ_END)}
     } else if (LKA == '{') {
       if (VLD[R_FLW_MAP_BGN] && is_r) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(R_FLW_MAP_BGN)}
       if (VLD[BR_FLW_MAP_BGN] && is_br) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(BR_FLW_MAP_BGN)}
       if (VLD[B_FLW_MAP_BGN] && is_b) {MAY_UPD_IMP_COL();ADV();MRK_END();RET_SYM(B_FLW_MAP_BGN)}
     } else if (LKA == '}') {
       if (VLD[R_FLW_MAP_END] && is_r) {ADV();MRK_END();RET_SYM(R_FLW_MAP_END)}
-      if (VLD[BR_FLW_MAP_END] && is_br) {ADV();MRK_END();RET_SYM(BR_FLW_MAP_END)}
+      if (VLD[BR_FLW_MAP_END]) {ADV();MRK_END();RET_SYM(BR_FLW_MAP_END)}
     } else if (LKA == ',') {
       if (VLD[R_FLW_SEP_BGN] && is_r) {ADV();MRK_END();RET_SYM(R_FLW_SEP_BGN)}
       if (VLD[BR_FLW_SEP_BGN] && is_br) {ADV();MRK_END();RET_SYM(BR_FLW_SEP_BGN)}
