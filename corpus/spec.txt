@@ -275,15 +275,14 @@ Allowed characters in quoted mapping key
         (block_mapping_pair
           key: (flow_node
             (double_quote_scalar
-              (escape_sequence)
-              (escape_sequence)
-              (escape_sequence)))
+              (quote_content)))
           value: (flow_node
             (plain_scalar
               (integer_scalar))))
         (block_mapping_pair
           key: (flow_node
-            (single_quote_scalar))
+            (single_quote_scalar
+              (quote_content)))
           value: (flow_node
             (plain_scalar
               (integer_scalar))))))))
@@ -640,7 +639,8 @@ Backslashes in singlequotes
       (block_mapping
         (block_mapping_pair
           key: (flow_node
-            (single_quote_scalar))
+            (single_quote_scalar
+              (quote_content)))
           value: (flow_node
             (plain_scalar
               (string_scalar))))))))
@@ -654,23 +654,17 @@ map:
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (block_node
-            (block_mapping
-              (block_mapping_pair
-                key: (flow_node
-                  (plain_scalar
-                    (string_scalar)))
-                value: (flow_node
-                  (double_quote_scalar)))
-              (ERROR))))))))
+(ERROR
+  (flow_node
+    (plain_scalar
+      (string_scalar)))
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (flow_node
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Bad indentation in mapping [INVALID]
@@ -690,7 +684,8 @@ map:
       (plain_scalar
         (string_scalar)))
     value: (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Bare document after document end marker
@@ -981,17 +976,13 @@ block scalar: >
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (block_node
-            (block_scalar)))
-        (ERROR)))))
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (block_node
+      (block_scalar))))
 
 ================================================================================
 Block Sequence in Block Mapping
@@ -1099,7 +1090,8 @@ Colon and adjacent value after comment on next line
       (flow_mapping
         (flow_pair
           key: (flow_node
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           (comment)
           value: (flow_node
             (plain_scalar
@@ -1120,7 +1112,8 @@ Colon and adjacent value on next line
       (flow_mapping
         (flow_pair
           key: (flow_node
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           value: (flow_node
             (plain_scalar
               (string_scalar))))))))
@@ -1151,9 +1144,15 @@ Colon in Double Quoted String
 
 (stream
   (document
-    (flow_node
-      (double_quote_scalar
-        (escape_sequence)))))
+    (block_node
+      (block_mapping
+        (block_mapping_pair
+          (flow_node
+            (double_quote_scalar
+              (quote_content)))
+          (flow_node
+            (plain_scalar
+              (string_scalar))))))))
 
 ================================================================================
 Comment and document-end marker
@@ -1212,19 +1211,15 @@ key: word1
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (comment)
-        (ERROR)))))
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (flow_node
+      (plain_scalar
+        (string_scalar))))
+  (comment))
 
 ================================================================================
 Comment that looks like a mapping key [INVALID]
@@ -1234,22 +1229,18 @@ this is #not a: key
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (ERROR
-          (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (comment)))))
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (flow_node
+      (plain_scalar
+        (string_scalar))))
+  (flow_node
+    (plain_scalar
+      (string_scalar)))
+  (comment))
 
 ================================================================================
 Comment without whitespace after block scalar indicator [INVALID]
@@ -1278,7 +1269,8 @@ key: "value"# invalid comment
       (plain_scalar
         (string_scalar)))
     value: (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Construct Binary
@@ -1309,10 +1301,7 @@ description:
           value: (flow_node
             (tag)
             (double_quote_scalar
-              (escape_sequence)
-              (escape_sequence)
-              (escape_sequence)
-              (escape_sequence))))
+              (quote_content))))
         (block_mapping_pair
           key: (flow_node
             (plain_scalar
@@ -1395,23 +1384,10 @@ Document-end marker
   (document))
 
 ================================================================================
-Double quoted scalar with escaped single quote [INVALID]
+Double quoted scalar with escaped single quote
 ================================================================================
 ---
 double: "quoted \' scalar"
-
---------------------------------------------------------------------------------
-
-(ERROR
-  (flow_node
-    (plain_scalar
-      (string_scalar))))
-
-================================================================================
-Double quoted string without closing quote [INVALID]
-================================================================================
----
-key: "missing closing quote
 
 --------------------------------------------------------------------------------
 
@@ -1420,10 +1396,12 @@ key: "missing closing quote
     (block_node
       (block_mapping
         (block_mapping_pair
-          key: (flow_node
+          (flow_node
             (plain_scalar
-              (string_scalar))))
-        (ERROR)))))
+              (string_scalar)))
+          (flow_node
+            (double_quote_scalar
+              (quote_content))))))))
 
 ================================================================================
 Doublequoted scalar starting with a tab
@@ -1443,7 +1421,7 @@ tab: "\tstring"
               (string_scalar)))
           value: (flow_node
             (double_quote_scalar
-              (escape_sequence))))))))
+              (quote_content))))))))
 
 ================================================================================
 Duplicate YAML directive
@@ -1584,7 +1562,7 @@ escaped slash: "a\/b"
               (string_scalar)))
           value: (flow_node
             (double_quote_scalar
-              (escape_sequence))))))))
+              (quote_content))))))))
 
 ================================================================================
 Explicit key and value seperated by comment
@@ -1678,9 +1656,11 @@ Flow mapping colon on line after key
       (flow_mapping
         (flow_pair
           key: (flow_node
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           value: (flow_node
-            (double_quote_scalar)))))))
+            (double_quote_scalar
+              (quote_content))))))))
 
 ================================================================================
 Flow Mapping in Block Sequence
@@ -1998,7 +1978,8 @@ Implicit key followed by newline and adjacent value [INVALID]
 
 (ERROR
   (flow_node
-    (double_quote_scalar)))
+    (double_quote_scalar
+      (quote_content))))
 
 ================================================================================
 Invalid anchor in zero indented sequence [INVALID]
@@ -2116,8 +2097,10 @@ Invalid document markers in flow style [INVALID]
 
 --------------------------------------------------------------------------------
 
-(ERROR
-  (string_scalar))
+(stream
+  (ERROR)
+  (document)
+  (MISSING _eof))
 
 ================================================================================
 Invalid document-end marker in single quoted string [INVALID]
@@ -2154,7 +2137,11 @@ Invalid escape in double quoted string [INVALID]
 
 --------------------------------------------------------------------------------
 
-(ERROR)
+(stream
+  (document
+    (flow_node
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Invalid item after end of flow sequence [INVALID]
@@ -2192,8 +2179,7 @@ invalid: x
         (string_scalar))))
   (flow_node
     (plain_scalar
-      (string_scalar)))
-  (string_scalar))
+      (string_scalar))))
 
 ================================================================================
 Invalid mapping in plain multiline [INVALID]
@@ -2259,7 +2245,8 @@ a: 'b': c
       (plain_scalar
         (string_scalar)))
     value: (flow_node
-      (single_quote_scalar))))
+      (single_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Invalid scalar after sequence [INVALID]
@@ -2270,20 +2257,14 @@ invalid
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_sequence
-        (block_sequence_item
-          (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (block_sequence_item
-          (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (ERROR
-          (string_scalar))))))
+(ERROR
+  (block_sequence_item
+    (flow_node
+      (plain_scalar
+        (string_scalar))))
+  (flow_node
+    (plain_scalar
+      (string_scalar))))
 
 ================================================================================
 Invalid scalar at the end of mapping [INVALID]
@@ -2295,28 +2276,24 @@ invalid
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (block_node
-            (block_sequence
-              (block_sequence_item
-                (flow_node
-                  (plain_scalar
-                    (string_scalar))))
-              (block_sequence_item
-                (flow_node
-                  (plain_scalar
-                    (string_scalar)))))))
-        (ERROR
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (block_node
+      (block_sequence
+        (block_sequence_item
           (flow_node
             (plain_scalar
-              (string_scalar))))))))
+              (string_scalar))))
+        (block_sequence_item
+          (flow_node
+            (plain_scalar
+              (string_scalar)))))))
+  (flow_node
+    (plain_scalar
+      (string_scalar))))
 
 ================================================================================
 Invalid scalar at the end of sequence [INVALID]
@@ -2328,26 +2305,17 @@ key:
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (block_node
-            (block_sequence
-              (block_sequence_item
-                (flow_node
-                  (plain_scalar
-                    (string_scalar))))
-              (block_sequence_item
-                (flow_node
-                  (plain_scalar
-                    (string_scalar))))
-              (ERROR
-                (string_scalar)))))))))
+(ERROR
+  (flow_node
+    (plain_scalar
+      (string_scalar)))
+  (block_sequence_item
+    (flow_node
+      (plain_scalar
+        (string_scalar))))
+  (flow_node
+    (plain_scalar
+      (string_scalar))))
 
 ================================================================================
 Invalid sequene item on same line as previous item [INVALID]
@@ -2420,21 +2388,17 @@ invalid
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (ERROR
-          (flow_node
-            (plain_scalar
-              (string_scalar))))))))
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (flow_node
+      (plain_scalar
+        (string_scalar))))
+  (flow_node
+    (plain_scalar
+      (string_scalar))))
 
 ================================================================================
 Key with anchor after missing explicit mapping value
@@ -2507,17 +2471,13 @@ block scalar: |
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (block_node
-            (block_scalar)))
-        (ERROR)))))
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (block_node
+      (block_scalar))))
 
 ================================================================================
 Literal unicode
@@ -2647,27 +2607,24 @@ top2
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (block_node
       (block_mapping
         (block_mapping_pair
           key: (flow_node
             (plain_scalar
               (string_scalar)))
-          value: (block_node
-            (block_mapping
-              (block_mapping_pair
-                key: (flow_node
-                  (plain_scalar
-                    (string_scalar)))
-                value: (flow_node
-                  (plain_scalar
-                    (string_scalar)))))))
-        (ERROR
-          (flow_node
+          value: (flow_node
             (plain_scalar
-              (string_scalar))))))))
+              (string_scalar)))))))
+      (flow_node
+        (plain_scalar
+          (string_scalar))))
+
 
 ================================================================================
 Missing comma in flow [INVALID]
@@ -2678,19 +2635,14 @@ key: [ word1
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (ERROR
-          (flow_node
-            (plain_scalar
-              (string_scalar)))
-          (comment))))))
+(ERROR
+  (flow_node
+    (plain_scalar
+      (string_scalar)))
+  (flow_node
+    (plain_scalar
+      (string_scalar)))
+  (comment))
 
 ================================================================================
 Missing document-end marker before directive [INVALID]
@@ -2703,17 +2655,11 @@ scalar2
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document)
-  (ERROR
-    (flow_node
-      (plain_scalar
-        (string_scalar)))
-    (comment))
-  (document
-    (flow_node
-      (plain_scalar
-        (string_scalar)))))
+(ERROR
+  (flow_node
+    (plain_scalar
+      (string_scalar)))
+  (comment))
 
 ================================================================================
 Missing space in YAML directive
@@ -2901,7 +2847,8 @@ Multiline double quoted flow mapping key
             (flow_mapping
               (flow_pair
                 key: (flow_node
-                  (double_quote_scalar))
+                  (double_quote_scalar
+                    (quote_content)))
                 value: (flow_node
                   (plain_scalar
                     (string_scalar)))))))
@@ -2910,7 +2857,8 @@ Multiline double quoted flow mapping key
             (flow_mapping
               (flow_pair
                 key: (flow_node
-                  (double_quote_scalar))
+                  (double_quote_scalar
+                    (quote_content)))
                 value: (flow_node
                   (plain_scalar
                     (string_scalar)))))))))))
@@ -2931,11 +2879,17 @@ Multiline double quoted implicit keys [INVALID]
         (block_mapping_pair
           key: (flow_node
             (double_quote_scalar
-              (escape_sequence)))
+              (quote_content)))
           value: (flow_node
             (plain_scalar
               (integer_scalar))))
-        (ERROR)))))
+        (block_mapping_pair
+          key: (flow_node
+            (double_quote_scalar
+              (quote_content)))
+          value: (flow_node
+            (plain_scalar
+              (integer_scalar))))))))
 
 ================================================================================
 Multiline doublequoted flow mapping key without value
@@ -2955,7 +2909,8 @@ Multiline doublequoted flow mapping key without value
           (flow_node
             (flow_mapping
               (flow_node
-                (double_quote_scalar))
+                (double_quote_scalar
+                  (quote_content)))
               (flow_pair
                 key: (flow_node
                   (plain_scalar
@@ -2967,7 +2922,8 @@ Multiline doublequoted flow mapping key without value
           (flow_node
             (flow_mapping
               (flow_node
-                (double_quote_scalar))
+                (double_quote_scalar
+                  (quote_content)))
               (flow_pair
                 key: (flow_node
                   (plain_scalar
@@ -3213,11 +3169,18 @@ Multiline single quoted implicit keys [INVALID]
       (block_mapping
         (block_mapping_pair
           key: (flow_node
-            (single_quote_scalar))
+            (single_quote_scalar
+              (quote_content)))
           value: (flow_node
             (plain_scalar
               (integer_scalar))))
-        (ERROR)))))
+        (block_mapping_pair
+          key: (flow_node
+            (single_quote_scalar
+              (quote_content)))
+          value: (flow_node
+            (plain_scalar
+              (integer_scalar))))))))
 
 ================================================================================
 Multiple Entry Block Sequence
@@ -3529,19 +3492,16 @@ key: &x
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (anchor
-              (anchor_name))))
-        (ERROR
-          (tag))))))
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (flow_node
+      (anchor
+        (anchor_name))))
+  (flow_node
+    (tag)))
 
 ================================================================================
 Node and Mapping Key Anchors
@@ -3815,10 +3775,12 @@ Non-Specific Tags on Scalars
               (string_scalar))))
         (block_sequence_item
           (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (flow_node
-            (single_quote_scalar)))
+            (single_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (block_node
             (block_scalar)))
@@ -3922,40 +3884,34 @@ top2: &node2
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (block_node
+      (anchor
+        (anchor_name))
       (block_mapping
         (block_mapping_pair
           key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (block_node
             (anchor
               (anchor_name))
-            (block_mapping
-              (block_mapping_pair
-                key: (flow_node
-                  (anchor
-                    (anchor_name))
-                  (plain_scalar
-                    (string_scalar)))
-                value: (flow_node
-                  (plain_scalar
-                    (string_scalar)))))))
-        (block_mapping_pair
-          key: (flow_node
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (anchor
-              (anchor_name))))
-        (ERROR
-          (flow_node
-            (anchor
-              (anchor_name))
             (plain_scalar
-              (string_scalar))))))))
+              (string_scalar)))))))
+  (flow_node
+    (plain_scalar
+      (string_scalar)))
+  (anchor
+    (anchor_name))
+  (flow_node
+    (anchor
+      (anchor_name))
+    (plain_scalar
+      (string_scalar))))
 
 ================================================================================
 Scalars on --- line
@@ -3969,7 +3925,8 @@ string"
 (stream
   (document
     (flow_node
-      (double_quote_scalar)))
+      (double_quote_scalar
+        (quote_content))))
   (document
     (flow_node
       (anchor
@@ -4898,71 +4855,6 @@ stats: |
             (block_scalar)))))))
 
 ================================================================================
-Spec Example 2.17. Quoted Scalars
-================================================================================
-unicode: "Sosa did fine.\u263A"
-control: "\b1998\t1999\t2000\n"
-hex esc: "\x0d\x0a is \r\n"
-
-single: '"Howdy!" he cried.'
-quoted: ' # Not a ''comment''.'
-tie-fighter: '|\-*-/|'
-
---------------------------------------------------------------------------------
-
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (double_quote_scalar
-              (escape_sequence))))
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (double_quote_scalar
-              (escape_sequence)
-              (escape_sequence)
-              (escape_sequence)
-              (escape_sequence))))
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (double_quote_scalar
-              (escape_sequence)
-              (escape_sequence)
-              (escape_sequence)
-              (escape_sequence))))
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (single_quote_scalar)))
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (single_quote_scalar
-              (escape_sequence)
-              (escape_sequence))))
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (single_quote_scalar)))))))
-
-================================================================================
 Spec Example 2.18. Multi-line Flow Scalars
 ================================================================================
 plain:
@@ -4991,7 +4883,7 @@ quoted: "So does this
               (string_scalar)))
           value: (flow_node
             (double_quote_scalar
-              (escape_sequence))))))))
+              (quote_content))))))))
 
 ================================================================================
 Spec Example 2.23. Various Explicit Tags
@@ -5792,13 +5684,15 @@ double: "text"
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (single_quote_scalar)))
+            (single_quote_scalar
+              (quote_content))))
         (block_mapping_pair
           key: (flow_node
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (double_quote_scalar)))))))
+            (double_quote_scalar
+              (quote_content))))))))
 
 ================================================================================
 Spec Example 5.9. Directive Indicator
@@ -5838,7 +5732,8 @@ block:	|
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_mapping_pair
           key: (flow_node
             (plain_scalar
@@ -6003,7 +5898,8 @@ block: |
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_mapping_pair
           key: (flow_node
             (plain_scalar
@@ -6034,7 +5930,8 @@ Chomping: |
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_mapping_pair
           key: (flow_node
             (plain_scalar
@@ -6065,7 +5962,8 @@ Chomping: |
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_mapping_pair
           key: (flow_node
             (plain_scalar
@@ -6142,7 +6040,8 @@ Spec Example 6.8. Flow Folding
 (stream
   (document
     (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.8. Flow Folding [1.3]
@@ -6161,7 +6060,8 @@ Spec Example 6.8. Flow Folding [1.3]
 (stream
   (document
     (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.9. Separated Comment
@@ -6293,7 +6193,8 @@ Spec Example 6.13. Reserved Directives
     (comment)
     (comment)
     (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.13. Reserved Directives [1.3]
@@ -6314,7 +6215,8 @@ Spec Example 6.13. Reserved Directives [1.3]
     (comment)
     (comment)
     (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.14. “YAML” directive
@@ -6333,7 +6235,8 @@ Spec Example 6.14. “YAML” directive
     (comment)
     (comment)
     (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.16. “TAG” directive
@@ -6351,7 +6254,8 @@ Spec Example 6.16. “TAG” directive
       (tag_prefix))
     (flow_node
       (tag)
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.18. Primary Tag Handle
@@ -6371,7 +6275,8 @@ Spec Example 6.18. Primary Tag Handle
   (document
     (flow_node
       (tag)
-      (double_quote_scalar)))
+      (double_quote_scalar
+        (quote_content))))
   (comment)
   (document
     (tag_directive
@@ -6379,7 +6284,8 @@ Spec Example 6.18. Primary Tag Handle
       (tag_prefix))
     (flow_node
       (tag)
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.18. Primary Tag Handle [1.3]
@@ -6400,7 +6306,8 @@ Spec Example 6.18. Primary Tag Handle [1.3]
   (document
     (flow_node
       (tag)
-      (double_quote_scalar)))
+      (double_quote_scalar
+        (quote_content))))
   (comment)
   (document
     (tag_directive
@@ -6408,7 +6315,8 @@ Spec Example 6.18. Primary Tag Handle [1.3]
       (tag_prefix))
     (flow_node
       (tag)
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.19. Secondary Tag Handle
@@ -6446,7 +6354,8 @@ Spec Example 6.20. Tag Handles
       (tag_prefix))
     (flow_node
       (tag)
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 6.21. Local Tag Prefix
@@ -6500,7 +6409,8 @@ Spec Example 6.22. Global Tag Prefix
         (block_sequence_item
           (flow_node
             (tag)
-            (double_quote_scalar)))))))
+            (double_quote_scalar
+              (quote_content))))))))
 
 ================================================================================
 Spec Example 6.23. Node Properties
@@ -6520,7 +6430,8 @@ Spec Example 6.23. Node Properties
             (tag)
             (anchor
               (anchor_name))
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           value: (flow_node
             (tag)
             (plain_scalar
@@ -6608,7 +6519,8 @@ Spec Example 6.28. Non-Specific Tags
       (block_sequence
         (block_sequence_item
           (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (flow_node
             (plain_scalar
@@ -6760,12 +6672,14 @@ Spec Example 7.4. Double Quoted Implicit Keys
       (block_mapping
         (block_mapping_pair
           key: (flow_node
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           value: (flow_node
             (flow_sequence
               (flow_pair
                 key: (flow_node
-                  (double_quote_scalar))
+                  (double_quote_scalar
+                    (quote_content)))
                 value: (flow_node
                   (plain_scalar
                     (string_scalar)))))))))))
@@ -6785,8 +6699,7 @@ to a line feed, or 	\
   (document
     (flow_node
       (double_quote_scalar
-        (escape_sequence)
-        (escape_sequence)))))
+        (quote_content)))))
 
 ================================================================================
 Spec Example 7.5. Double Quoted Line Breaks [1.3]
@@ -6804,8 +6717,7 @@ to a line feed, or 	\
   (document
     (flow_node
       (double_quote_scalar
-        (escape_sequence)
-        (escape_sequence)))))
+        (quote_content)))))
 
 ================================================================================
 Spec Example 7.6. Double Quoted Lines
@@ -6820,7 +6732,8 @@ Spec Example 7.6. Double Quoted Lines
 (stream
   (document
     (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 7.6. Double Quoted Lines [1.3]
@@ -6836,7 +6749,8 @@ Spec Example 7.6. Double Quoted Lines [1.3]
 (stream
   (document
     (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 7.7. Single Quoted Characters
@@ -6845,25 +6759,21 @@ Spec Example 7.7. Single Quoted Characters
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (flow_node
-      (single_quote_scalar
-        (escape_sequence)))))
+(ERROR
+  (single_quote_scalar
+    (quote_content)))
 
 ================================================================================
-Spec Example 7.7. Single Quoted Characters [1.3]
+Spec Example 7.7. Single Quoted Characters [1.3] [INVALID]
 ================================================================================
 ---
 'here''s to "quotes"'
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (flow_node
-      (single_quote_scalar
-        (escape_sequence)))))
+(ERROR
+  (single_quote_scalar
+    (quote_content)))
 
 ================================================================================
 Spec Example 7.8. Single Quoted Implicit Keys
@@ -6880,12 +6790,14 @@ Spec Example 7.8. Single Quoted Implicit Keys
       (block_mapping
         (block_mapping_pair
           key: (flow_node
-            (single_quote_scalar))
+            (single_quote_scalar
+              (quote_content)))
           value: (flow_node
             (flow_sequence
               (flow_pair
                 key: (flow_node
-                  (single_quote_scalar))
+                  (single_quote_scalar
+                    (quote_content)))
                 value: (flow_node
                   (plain_scalar
                     (string_scalar)))))))))))
@@ -6903,7 +6815,8 @@ Spec Example 7.9. Single Quoted Lines
 (stream
   (document
     (flow_node
-      (single_quote_scalar))))
+      (single_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 7.9. Single Quoted Lines [1.3]
@@ -6919,7 +6832,8 @@ Spec Example 7.9. Single Quoted Lines [1.3]
 (stream
   (document
     (flow_node
-      (single_quote_scalar))))
+      (single_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Spec Example 7.10. Plain Characters
@@ -6950,7 +6864,8 @@ Spec Example 7.10. Plain Characters
               (string_scalar))))
         (block_sequence_item
           (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (flow_node
             (plain_scalar
@@ -6971,9 +6886,11 @@ Spec Example 7.10. Plain Characters
                 (plain_scalar
                   (string_scalar)))
               (flow_node
-                (double_quote_scalar))
+                (double_quote_scalar
+                  (quote_content)))
               (flow_node
-                (double_quote_scalar))
+                (double_quote_scalar
+                  (quote_content)))
               (flow_node
                 (plain_scalar
                   (integer_scalar)))
@@ -7074,9 +6991,11 @@ single: pair,
     (flow_node
       (flow_sequence
         (flow_node
-          (double_quote_scalar))
+          (double_quote_scalar
+            (quote_content)))
         (flow_node
-          (single_quote_scalar))
+          (single_quote_scalar
+            (quote_content)))
         (flow_node
           (plain_scalar
             (string_scalar)))
@@ -7192,7 +7111,8 @@ omitted value:,
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (flow_node
           (plain_scalar
             (string_scalar)))
@@ -7222,19 +7142,22 @@ Spec Example 7.18. Flow Mapping Adjacent Values
       (flow_mapping
         (flow_pair
           key: (flow_node
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           value: (flow_node
             (plain_scalar
               (string_scalar))))
         (flow_pair
           key: (flow_node
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           value: (flow_node
             (plain_scalar
               (string_scalar))))
         (flow_pair
           key: (flow_node
-            (double_quote_scalar)))))))
+            (double_quote_scalar
+              (quote_content))))))))
 
 ================================================================================
 Spec Example 7.19. Single Pair Flow Mappings
@@ -7335,36 +7258,37 @@ Spec Example 7.21. Single Pair Implicit Entries [1.3
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_sequence
-        (block_sequence_item
-          (flow_node
-            (flow_sequence
-              (flow_pair
-                key: (flow_node
-                  (plain_scalar
-                    (string_scalar)))
-                value: (flow_node
-                  (plain_scalar
-                    (string_scalar)))))))
-        (block_sequence_item
-          (flow_node
-            (flow_sequence
-              (flow_pair
-                value: (flow_node
-                  (plain_scalar
-                    (string_scalar)))))))
-        (block_sequence_item
-          (flow_node
-            (flow_sequence
-              (flow_pair
-                key: (flow_node
-                  (double_quote_scalar))
-                value: (flow_node
-                  (plain_scalar
-                    (string_scalar)))))))))))
+    (stream
+      (document
+        (block_node
+          (block_sequence
+            (block_sequence_item
+              (flow_node
+                (flow_sequence
+                  (flow_pair
+                    key: (flow_node
+                      (plain_scalar
+                        (string_scalar)))
+                    value: (flow_node
+                      (plain_scalar
+                        (string_scalar)))))))
+            (block_sequence_item
+              (flow_node
+                (flow_sequence
+                  (flow_pair
+                    value: (flow_node
+                      (plain_scalar
+                        (string_scalar)))))))
+            (block_sequence_item
+              (flow_node
+                (flow_sequence
+                  (flow_pair
+                    key: (flow_node
+                      (double_quote_scalar
+                        (quote_content)))
+                    value: (flow_node
+                      (plain_scalar
+                        (string_scalar)))))))))))
 
 ================================================================================
 Spec Example 7.23. Flow Content
@@ -7402,10 +7326,12 @@ Spec Example 7.23. Flow Content
                     (string_scalar)))))))
         (block_sequence_item
           (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (flow_node
-            (single_quote_scalar)))
+            (single_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (flow_node
             (plain_scalar
@@ -7429,15 +7355,18 @@ Spec Example 7.24. Flow Nodes
         (block_sequence_item
           (flow_node
             (tag)
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (flow_node
-            (single_quote_scalar)))
+            (single_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (flow_node
             (anchor
               (anchor_name))
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (flow_node
             (alias
@@ -7976,7 +7905,8 @@ plain key: in-line value
         (comment)
         (block_mapping_pair
           key: (flow_node
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           value: (block_node
             (block_sequence
               (block_sequence_item
@@ -8048,7 +7978,8 @@ Spec Example 8.20. Block Node Types
       (block_sequence
         (block_sequence_item
           (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (block_sequence_item
           (block_node
             (block_scalar)))
@@ -8728,19 +8659,15 @@ plain: a
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar)))
-          value: (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (comment)
-        (ERROR)))))
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (flow_node
+      (plain_scalar
+        (string_scalar))))
+  (comment))
 
 ================================================================================
 Trailing content after quoted value [INVALID]
@@ -8757,13 +8684,15 @@ key3: "quoted3"
       (plain_scalar
         (string_scalar)))
     value: (flow_node
-      (double_quote_scalar)))
+      (double_quote_scalar
+        (quote_content))))
   (block_mapping_pair
     key: (flow_node
       (plain_scalar
         (string_scalar)))
     value: (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Trailing content that looks like a mapping [INVALID]
@@ -8780,13 +8709,15 @@ key3: "quoted3"
       (plain_scalar
         (string_scalar)))
     value: (flow_node
-      (double_quote_scalar)))
+      (double_quote_scalar
+        (quote_content))))
   (block_mapping_pair
     key: (flow_node
       (plain_scalar
         (string_scalar)))
     value: (flow_node
-      (double_quote_scalar))))
+      (double_quote_scalar
+        (quote_content)))))
 
 ================================================================================
 Two document start markers
@@ -9194,7 +9125,8 @@ block: > # lala
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (comment)
         (block_mapping_pair
           key: (flow_node
@@ -9285,7 +9217,8 @@ block: > # lala
             (plain_scalar
               (string_scalar)))
           value: (flow_node
-            (double_quote_scalar)))
+            (double_quote_scalar
+              (quote_content))))
         (comment)
         (block_mapping_pair
           key: (flow_node
@@ -9419,7 +9352,8 @@ Whitespace After Scalars in Flow
             (flow_mapping
               (flow_pair
                 key: (flow_node
-                  (double_quote_scalar))
+                  (double_quote_scalar
+                    (quote_content)))
                 value: (flow_node
                   (plain_scalar
                     (string_scalar))))
@@ -9428,13 +9362,15 @@ Whitespace After Scalars in Flow
                   (plain_scalar
                     (string_scalar)))
                 value: (flow_node
-                  (single_quote_scalar)))
+                  (single_quote_scalar
+                    (quote_content))))
               (flow_pair
                 key: (flow_node
                   (plain_scalar
                     (string_scalar)))
                 value: (flow_node
-                  (double_quote_scalar))))))
+                  (double_quote_scalar
+                    (quote_content)))))))
         (block_sequence_item
           (flow_node
             (flow_sequence)))))))
@@ -9463,12 +9399,14 @@ top6:
       (block_mapping
         (block_mapping_pair
           key: (flow_node
-            (double_quote_scalar))
+            (double_quote_scalar
+              (quote_content)))
           value: (block_node
             (block_mapping
               (block_mapping_pair
                 key: (flow_node
-                  (double_quote_scalar))
+                  (double_quote_scalar
+                    (quote_content)))
                 value: (flow_node
                   (anchor
                     (anchor_name))
@@ -9476,12 +9414,14 @@ top6:
                     (string_scalar)))))))
         (block_mapping_pair
           key: (flow_node
-            (single_quote_scalar))
+            (single_quote_scalar
+              (quote_content)))
           value: (block_node
             (block_mapping
               (block_mapping_pair
                 key: (flow_node
-                  (single_quote_scalar))
+                  (single_quote_scalar
+                    (quote_content)))
                 value: (flow_node
                   (anchor
                     (anchor_name))
@@ -9532,7 +9472,8 @@ top6:
                 key: (flow_node
                   (anchor
                     (anchor_name))
-                  (single_quote_scalar))
+                  (single_quote_scalar
+                    (quote_content)))
                 value: (flow_node
                   (plain_scalar
                     (string_scalar)))))))))))
@@ -9607,20 +9548,13 @@ c]
 
 --------------------------------------------------------------------------------
 
-(stream
-  (document
-    (block_node
-      (block_mapping
-        (block_mapping_pair
-          key: (flow_node
-            (plain_scalar
-              (string_scalar))))
-        (ERROR
-          (flow_node
-            (plain_scalar
-              (string_scalar)))
-          (string_scalar)
-          (string_scalar))))))
+(ERROR
+  (flow_node
+    (plain_scalar
+      (string_scalar)))
+  (flow_node
+    (plain_scalar
+      (string_scalar))))
 
 ================================================================================
 Wrong indented multiline quoted scalar [INVALID]
@@ -9639,10 +9573,10 @@ c"
         (block_mapping_pair
           key: (flow_node
             (plain_scalar
-              (string_scalar))))
-        (ERROR
-          (string_scalar)
-          (string_scalar))))))
+              (string_scalar)))
+          value: (flow_node
+            (double_quote_scalar
+              (quote_content))))))))
 
 ================================================================================
 Wrong indented sequence item [INVALID]
@@ -9671,18 +9605,14 @@ key: value
 
 --------------------------------------------------------------------------------
 
-(stream
-  (ERROR
-    (block_mapping_pair
-      key: (flow_node
-        (plain_scalar
-          (string_scalar)))
-      value: (flow_node
-        (plain_scalar
-          (string_scalar)))))
-  (document
-    (yaml_directive
-      (yaml_version))))
+(ERROR
+  (block_mapping_pair
+    key: (flow_node
+      (plain_scalar
+        (string_scalar)))
+    value: (flow_node
+      (plain_scalar
+        (string_scalar)))))
 
 ================================================================================
 Zero indented block scalar
